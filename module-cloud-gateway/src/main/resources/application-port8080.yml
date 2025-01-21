@@ -1,0 +1,8 @@
+spring:
+  config:
+    activate:
+      on-profile: port8080
+
+server:
+  # 포트번호
+  port: 8080

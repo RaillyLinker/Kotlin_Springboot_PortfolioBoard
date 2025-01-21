@@ -1,0 +1,43 @@
+# (실행 환경 공통 설정)
+# : 개발 환경에 상관 없이 공통으로 적용되는 설정
+
+server:
+  error:
+    include-stacktrace: NEVER # 자세한 에러 명세는 클라이언트에게 전달하지 않기
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" # open 할 actuator 경로 설정 (SecurityConfig 에선 actuator/** 허용, ActuatorEndpointFilter 에선 actuator/** IP 제한 설정)
+  endpoint:
+    health:
+      show-details: always # actuator/health 에 디테일 정보 반환
+  info:
+    os:
+      enabled: true
+    java:
+      enabled: true
+    env:
+      enabled: true
+
+# springboot actuator info 에 표시될 정보 설정
+info:
+  made-by: com.raillylinker
+
+spring:
+  profiles:
+    group: # 프로필 그룹 생성 - 새로운 프로필명에, 하위 프로필들을 조합. 생성한 그룹은 spring.config.activate.on-profile 에서 명시해줘야함
+      # !!!모듈별 설정 파일이 늘어나면 아래에 반영하기!!!
+      local8080:
+        - local
+        - port8080
+      dev8080:
+        - dev
+        - port8080
+      prod80:
+        - prod
+        - port80
+    default: local8080 # jar 실행시 프로필 설정이 없을 때 적용할 프로필
+    # IDE 실행 프로필 설정은, 실행 - 구성편집에서 VM 옵션 안에 -Dspring.profiles.active=dev8080 이렇게 설정 가능
+    # prod 실행 포트를 나눠둔 이유는 배포 서버의 무중단 배포시 스위칭을 위한 것

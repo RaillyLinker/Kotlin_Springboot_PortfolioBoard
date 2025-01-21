@@ -1,0 +1,55 @@
+# (실행 환경 local 설정)
+# : 로컬 환경 개발자를 위한 환경 설정 = 서버 개발자가 마음껏 사용 가능 (그냥 IDE 를 실행하면 적용)
+
+spring:
+  application:
+    # Eureka 에 등록될 서비스 이름 (복제 서버는 같은 이름으로 설정하여 로드밸런싱)
+    name: CLOUD-GATEWAY-LOCAL
+
+  config:
+    activate: # 프로필명 설정
+      on-profile: local
+
+  cloud:
+    gateway:
+      routes:
+        - id: AUTH-LOCAL  # 라우팅 ID
+          predicates:
+            - Path=/auth/**  # "/cloud-sample-client/**" 경로로 들어오는 요청을 라우팅
+          uri: lb://AUTH-LOCAL  # Eureka에서 `CLOUD-SAMPLE-CLIENT-LOCAL` 이름으로 서비스를 찾아서 요청을 전달
+          filters:
+            # 가장 앞의 "/cloud-sample-client" 를 주소에서 떼고 라우팅
+            - RewritePath=/auth/(?<path>.*),/$\{path}
+            # 요청 실패시 재시도(로드밸런스 설정시 다른 노드로 요청)
+            - name: "Retry"
+              args:
+                retries: 3
+                statuses: INTERNAL_SERVER_ERROR
+
+        - id: BOARD-LOCAL  # 라우팅 ID
+          predicates:
+            - Path=/board/**  # "/cloud-sample-client/**" 경로로 들어오는 요청을 라우팅
+          uri: lb://BOARD-LOCAL  # CLOUD-SAMPLE-CLIENT-DEV` 이름으로 서비스를 찾아서 요청을 전달
+          filters:
+            # 가장 앞의 "/cloud-sample-client" 를 주소에서 떼고 라우팅
+            - RewritePath=/board/(?<path>.*),/$\{path}
+            # 요청 실패시 재시도(로드밸런스 설정시 다른 노드로 요청)
+            - name: "Retry"
+              args:
+                retries: 3
+                statuses: INTERNAL_SERVER_ERROR
+
+# eureka 서버에 전달할 정보 설정
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    # Eureka Client 로 등록
+    register-with-eureka: false
+    # Eureka 서버에서 레지스트리를 가져올지 여부
+    fetch-registry: true
+    healthcheck:
+      enabled: true  # Eureka 서버가 /actuator/health 엔드포인트로 상태를 확인
+    service-url:
+      # Eureka 서버 목록
+      defaultZone: http://127.0.0.1:10001/eureka/

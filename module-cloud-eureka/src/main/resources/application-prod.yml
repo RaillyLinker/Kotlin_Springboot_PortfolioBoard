@@ -1,0 +1,25 @@
+# (실행 환경 prod 설정)
+# : 배포 환경 엄중한 환경 설정
+
+spring:
+  application:
+    # Eureka 에 등록될 서비스 이름 (복제 서버는 같은 이름으로 설정하여 로드밸런싱)
+    name: CLOUD-EUREKA-PROD
+
+  config:
+    activate: # 프로필명 설정
+      on-profile: prod
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    # Eureka Client 로 등록
+    registerWithEureka: false
+    # Eureka 서버에서 레지스트리를 가져올지 여부
+    fetchRegistry: false
+    healthcheck:
+      enabled: false  # Eureka 서버가 /actuator/health 엔드포인트로 상태를 확인
+#    serviceUrl:
+#      # Eureka 서버 목록
+#      defaultZone: http://127.0.0.1:10002/eureka/,http://127.0.0.1:10003/eureka/

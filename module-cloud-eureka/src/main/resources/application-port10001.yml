@@ -1,0 +1,8 @@
+spring:
+  config:
+    activate:
+      on-profile: port10001
+
+server:
+  # 포트번호
+  port: 10001

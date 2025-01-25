@@ -158,6 +158,7 @@
     jpa 와 관련된 entity, repository 등은 jpa_beans 에,<br>
     kafka 와 관련된 producer 나 consumer 파일들은 kafka_components 에 모아두는 방식을 사용하여,<br>
     직관적이고 실용성이 있는 구분 방식을 고수하여 사용함으로써 실전성을 확인했습니다.<br><br>
+    ![화면 캡처 2025-01-25 141224](https://github.com/user-attachments/assets/f0b6f165-71cb-4ebb-84b0-0777a5b6f860)<br><br>
 
 11. Swagger 를 사용하여 문서화 하는 것을 중시합니다.<br>
     서버의 역할은 클라이언트에 서비스를 서빙하는 것이고, API 문서를 공유하는 것이 중요합니다.<br><br>

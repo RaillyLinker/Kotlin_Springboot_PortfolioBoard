@@ -47,6 +47,7 @@
    ![화면 캡처 2025-01-22 120750](https://github.com/user-attachments/assets/f15680a0-bfd8-4929-a553-2960dd63470f)<br>
    ![화면 캡처 2025-01-22 120833](https://github.com/user-attachments/assets/4717369d-11d5-4937-a50e-4d8605adbbe6)<br><br>
    아래 도표는 인증/인가 도메인과 게시판 도메인을 MSA 에 맞게 분리했을 때의 구조를 보여줍니다.<br><br>
+   ![화면 캡처 2025-01-26 195530](https://github.com/user-attachments/assets/ddb7aa70-3e5b-433c-9693-f34bbb84b07b)<br><br>
 
 2. 효율적인 MSA 구축 및 관리를 위한 Spring Cloud 사용 :<br>
    MSA 를 구축할 때에 저는 Spring Cloud 라이브러리를 사용하였습니다.<br><br>

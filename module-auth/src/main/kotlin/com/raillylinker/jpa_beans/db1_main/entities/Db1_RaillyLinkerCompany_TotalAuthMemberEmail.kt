@@ -24,7 +24,11 @@ class Db1_RaillyLinkerCompany_TotalAuthMemberEmail(
 
     @Column(name = "email_address", nullable = false, columnDefinition = "VARCHAR(100)")
     @Comment("이메일 주소 (중복 비허용)")
-    var emailAddress: String
+    var emailAddress: String,
+
+    @Column(name = "priority", nullable = false, columnDefinition = "MEDIUMINT UNSIGNED")
+    @Comment("가중치(높을수록 전면에 표시되며, 동일 가중치의 경우 최신 정보가 우선됩니다.)")
+    var priority: Int
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,9 +53,6 @@ class Db1_RaillyLinkerCompany_TotalAuthMemberEmail(
 
     // ---------------------------------------------------------------------------------------------
     // [@OneToMany 변수들]
-    // 정보가 삭제되면 참조 컬럼 null 처리
-    @OneToMany(mappedBy = "frontTotalAuthMemberEmail", fetch = FetchType.LAZY)
-    var totalAuthMemberList: MutableList<Db1_RaillyLinkerCompany_TotalAuthMember> = mutableListOf()
 
 
     // ---------------------------------------------------------------------------------------------

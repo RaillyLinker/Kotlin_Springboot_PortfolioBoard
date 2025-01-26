@@ -7,9 +7,7 @@ import com.raillylinker.controllers.BoardController
 import com.raillylinker.controllers.BoardController.GetBoardPageSortingDirectionEnum
 import com.raillylinker.controllers.BoardController.GetBoardPageSortingTypeEnum
 import com.raillylinker.jpa_beans.db1_main.entities.QDb1_RaillyLinkerCompany_SampleBoard
-import com.raillylinker.jpa_beans.db1_main.entities.QDb1_RaillyLinkerCompany_SampleBoardComment
 import com.raillylinker.jpa_beans.db1_main.entities.QDb1_RaillyLinkerCompany_TotalAuthMember
-import com.raillylinker.jpa_beans.db1_main.entities.QDb1_RaillyLinkerCompany_TotalAuthMemberProfile
 import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Repository
 import org.springframework.data.domain.Page
@@ -34,8 +32,6 @@ class Db1_RaillyLinkerCompany_SampleBoard_RepositoryDsl(entityManager: EntityMan
         // Q 엔티티
         val sampleBoard = QDb1_RaillyLinkerCompany_SampleBoard.db1_RaillyLinkerCompany_SampleBoard
         val totalAuthMember = QDb1_RaillyLinkerCompany_TotalAuthMember.db1_RaillyLinkerCompany_TotalAuthMember
-        val totalAuthMemberProfile =
-            QDb1_RaillyLinkerCompany_TotalAuthMemberProfile.db1_RaillyLinkerCompany_TotalAuthMemberProfile
 
         // 동적 정렬 조건
         val orderBy = when (sortingType) {
@@ -86,18 +82,13 @@ class Db1_RaillyLinkerCompany_SampleBoard_RepositoryDsl(entityManager: EntityMan
                 sampleBoard.rowUpdateDate.`as`("updateDate"),
                 sampleBoard.viewCount.`as`("viewCount"),
                 sampleBoard.totalAuthMember.uid.`as`("writerUserUid"),
-                totalAuthMember.accountId.`as`("writerUserNickname"),
-                totalAuthMemberProfile.imageFullUrl.`as`("writerUserProfileFullUrl")
+                totalAuthMember.accountId.`as`("writerUserNickname")
             )
         )
             .from(sampleBoard)
             .innerJoin(totalAuthMember).on(
                 totalAuthMember.rowDeleteDateStr.eq("/")
                     .and(totalAuthMember.eq(sampleBoard.totalAuthMember))
-            )
-            .leftJoin(totalAuthMemberProfile).on(
-                totalAuthMemberProfile.rowDeleteDateStr.eq("/")
-                    .and(totalAuthMemberProfile.eq(totalAuthMember.frontTotalAuthMemberProfile))
             )
             .where(baseCondition.and(searchCondition))
             .orderBy(orderSpecifier)
@@ -131,7 +122,6 @@ class Db1_RaillyLinkerCompany_SampleBoard_RepositoryDsl(entityManager: EntityMan
         var updateDate: LocalDateTime = LocalDateTime.now(),
         var viewCount: Long = 0L,
         var writerUserUid: Long = 0L,
-        var writerUserNickname: String = "",
-        var writerUserProfileFullUrl: String? = null
+        var writerUserNickname: String = ""
     )
 }

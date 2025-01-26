@@ -21,7 +21,11 @@ class Db1_RaillyLinkerCompany_TotalAuthMemberProfile(
 
     @Column(name = "image_full_url", nullable = false, columnDefinition = "VARCHAR(200)")
     @Comment("프로필 이미지 Full URL")
-    var imageFullUrl: String
+    var imageFullUrl: String,
+
+    @Column(name = "priority", nullable = false, columnDefinition = "MEDIUMINT UNSIGNED")
+    @Comment("가중치(높을수록 전면에 표시되며, 동일 가중치의 경우 최신 정보가 우선됩니다.)")
+    var priority: Int
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,9 +50,6 @@ class Db1_RaillyLinkerCompany_TotalAuthMemberProfile(
 
     // ---------------------------------------------------------------------------------------------
     // [@OneToMany 변수들]
-    // 정보가 삭제되면 참조 컬럼 null 처리
-    @OneToMany(mappedBy = "frontTotalAuthMemberProfile", fetch = FetchType.LAZY)
-    var totalAuthMemberList: MutableList<Db1_RaillyLinkerCompany_TotalAuthMember> = mutableListOf()
 
 
     // ---------------------------------------------------------------------------------------------

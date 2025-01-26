@@ -20,7 +20,7 @@ interface Db1_RaillyLinkerCompany_TotalAuthMemberPhone_Repository :
         rowDeleteDateStr: String
     ): Boolean
 
-    fun findAllByTotalAuthMemberAndRowDeleteDateStr(
+    fun findAllByTotalAuthMemberAndRowDeleteDateStrOrderByPriorityDescRowCreateDateDesc(
         totalAuthMember: Db1_RaillyLinkerCompany_TotalAuthMember,
         rowDeleteDateStr: String
     ): List<Db1_RaillyLinkerCompany_TotalAuthMemberPhone>
@@ -29,4 +29,10 @@ interface Db1_RaillyLinkerCompany_TotalAuthMemberPhone_Repository :
         totalAuthMember: Db1_RaillyLinkerCompany_TotalAuthMember,
         rowDeleteDateStr: String
     ): Boolean
+
+    fun findByTotalAuthMemberAndUidAndRowDeleteDateStr(
+        totalAuthMember: Db1_RaillyLinkerCompany_TotalAuthMember,
+        uid: Long,
+        rowDeleteDateStr: String
+    ): Db1_RaillyLinkerCompany_TotalAuthMemberPhone?
 }

@@ -9,23 +9,22 @@ import java.time.LocalDateTime
 
 @Entity
 @Table(
-    name = "total_auth_member_profile",
-    catalog = "railly_linker_company"
+    name = "total_auth_member_role",
+    catalog = "railly_linker_company",
+    uniqueConstraints = [
+        UniqueConstraint(columnNames = ["total_auth_member_uid", "role", "row_delete_date_str"])
+    ]
 )
-@Comment("통합 로그인 계정 회원 프로필 정보 테이블")
-class Db1_RaillyLinkerCompany_TotalAuthMemberProfile(
+@Comment("통합 로그인 계정 회원 권한 정보 테이블")
+class Db1_RaillyLinkerCompany_TotalAuthMemberRole(
     @ManyToOne
     @JoinColumn(name = "total_auth_member_uid", nullable = false)
     @Comment("멤버 고유번호(railly_linker_company.total_auth_member.uid)")
     var totalAuthMember: Db1_RaillyLinkerCompany_TotalAuthMember,
 
-    @Column(name = "image_full_url", nullable = false, columnDefinition = "VARCHAR(200)")
-    @Comment("프로필 이미지 Full URL")
-    var imageFullUrl: String,
-
-    @Column(name = "priority", nullable = false, columnDefinition = "MEDIUMINT UNSIGNED")
-    @Comment("가중치(높을수록 전면에 표시되며, 동일 가중치의 경우 최신 정보가 우선됩니다.)")
-    var priority: Int
+    @Column(name = "role", nullable = false, columnDefinition = "VARCHAR(100)")
+    @Comment("권한 코드 (ROLE_{권한} 형식으로 저장합니다.) (ex : (관리자 : ROLE_ADMIN, 개발자 : ROLE_DEVELOPER))")
+    var role: String
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,9 +46,6 @@ class Db1_RaillyLinkerCompany_TotalAuthMemberProfile(
     @ColumnDefault("'/'")
     @Comment("행 삭제일(yyyy_MM_dd_T_HH_mm_ss_SSS_z, 삭제되지 않았다면 /)")
     var rowDeleteDateStr: String = "/"
-
-    // ---------------------------------------------------------------------------------------------
-    // [@OneToMany 변수들]
 
 
     // ---------------------------------------------------------------------------------------------

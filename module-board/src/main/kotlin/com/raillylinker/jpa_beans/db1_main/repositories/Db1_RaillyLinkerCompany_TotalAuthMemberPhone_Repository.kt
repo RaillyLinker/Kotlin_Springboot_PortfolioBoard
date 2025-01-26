@@ -1,5 +1,6 @@
 package com.raillylinker.jpa_beans.db1_main.repositories
 
+import com.raillylinker.jpa_beans.db1_main.entities.Db1_RaillyLinkerCompany_TotalAuthMember
 import com.raillylinker.jpa_beans.db1_main.entities.Db1_RaillyLinkerCompany_TotalAuthMemberPhone
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
@@ -9,4 +10,23 @@ import org.springframework.stereotype.Repository
 @Repository
 interface Db1_RaillyLinkerCompany_TotalAuthMemberPhone_Repository :
     JpaRepository<Db1_RaillyLinkerCompany_TotalAuthMemberPhone, Long> {
+    fun findByPhoneNumberAndRowDeleteDateStr(
+        phoneNumber: String,
+        rowDeleteDateStr: String
+    ): Db1_RaillyLinkerCompany_TotalAuthMemberPhone?
+
+    fun existsByPhoneNumberAndRowDeleteDateStr(
+        phoneNumber: String,
+        rowDeleteDateStr: String
+    ): Boolean
+
+    fun findAllByTotalAuthMemberAndRowDeleteDateStrOrderByPriorityDescRowCreateDateDesc(
+        totalAuthMember: Db1_RaillyLinkerCompany_TotalAuthMember,
+        rowDeleteDateStr: String
+    ): List<Db1_RaillyLinkerCompany_TotalAuthMemberPhone>
+
+    fun existsByTotalAuthMemberAndRowDeleteDateStr(
+        totalAuthMember: Db1_RaillyLinkerCompany_TotalAuthMember,
+        rowDeleteDateStr: String
+    ): Boolean
 }

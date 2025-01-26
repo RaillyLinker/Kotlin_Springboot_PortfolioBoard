@@ -4,7 +4,6 @@ import com.querydsl.core.types.Projections
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.raillylinker.jpa_beans.db1_main.entities.QDb1_RaillyLinkerCompany_SampleBoardComment
 import com.raillylinker.jpa_beans.db1_main.entities.QDb1_RaillyLinkerCompany_TotalAuthMember
-import com.raillylinker.jpa_beans.db1_main.entities.QDb1_RaillyLinkerCompany_TotalAuthMemberProfile
 import jakarta.persistence.EntityManager
 import org.springframework.stereotype.Repository
 import org.springframework.data.domain.Page
@@ -27,8 +26,6 @@ class Db1_RaillyLinkerCompany_SampleBoardComment_RepositoryDsl(entityManager: En
         // Q 엔티티
         val sampleBoardComment = QDb1_RaillyLinkerCompany_SampleBoardComment.db1_RaillyLinkerCompany_SampleBoardComment
         val totalAuthMember = QDb1_RaillyLinkerCompany_TotalAuthMember.db1_RaillyLinkerCompany_TotalAuthMember
-        val totalAuthMemberProfile =
-            QDb1_RaillyLinkerCompany_TotalAuthMemberProfile.db1_RaillyLinkerCompany_TotalAuthMemberProfile
 
         // 동적 정렬 조건
         val orderBy = if (commentUid == null) {
@@ -45,18 +42,13 @@ class Db1_RaillyLinkerCompany_SampleBoardComment_RepositoryDsl(entityManager: En
                 sampleBoardComment.rowCreateDate.`as`("createDate"),
                 sampleBoardComment.rowUpdateDate.`as`("updateDate"),
                 sampleBoardComment.totalAuthMember.uid.`as`("writerUserUid"),
-                totalAuthMember.accountId.`as`("writerUserNickname"),
-                totalAuthMemberProfile.imageFullUrl.`as`("writerUserProfileFullUrl")
+                totalAuthMember.accountId.`as`("writerUserNickname")
             )
         )
             .from(sampleBoardComment)
             .innerJoin(totalAuthMember).on(
                 totalAuthMember.rowDeleteDateStr.eq("/")
                     .and(totalAuthMember.eq(sampleBoardComment.totalAuthMember))
-            )
-            .leftJoin(totalAuthMemberProfile).on(
-                totalAuthMemberProfile.rowDeleteDateStr.eq("/")
-                    .and(totalAuthMemberProfile.eq(totalAuthMember.frontTotalAuthMemberProfile))
             )
             .where(
                 sampleBoardComment.rowDeleteDateStr.eq("/"),
@@ -109,7 +101,6 @@ class Db1_RaillyLinkerCompany_SampleBoardComment_RepositoryDsl(entityManager: En
         var createDate: LocalDateTime = LocalDateTime.now(),
         var updateDate: LocalDateTime = LocalDateTime.now(),
         var writerUserUid: Long = 0L,
-        var writerUserNickname: String = "",
-        var writerUserProfileFullUrl: String? = null
+        var writerUserNickname: String = ""
     )
 }

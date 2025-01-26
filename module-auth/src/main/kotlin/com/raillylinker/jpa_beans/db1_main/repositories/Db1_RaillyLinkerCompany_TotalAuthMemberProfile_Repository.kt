@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface Db1_RaillyLinkerCompany_TotalAuthMemberProfile_Repository :
     JpaRepository<Db1_RaillyLinkerCompany_TotalAuthMemberProfile, Long> {
-    fun findAllByTotalAuthMemberAndRowDeleteDateStr(
+    fun findAllByTotalAuthMemberAndRowDeleteDateStrOrderByPriorityDescRowCreateDateDesc(
         totalAuthMember: Db1_RaillyLinkerCompany_TotalAuthMember,
         rowDeleteDateStr: String
     ): List<Db1_RaillyLinkerCompany_TotalAuthMemberProfile>

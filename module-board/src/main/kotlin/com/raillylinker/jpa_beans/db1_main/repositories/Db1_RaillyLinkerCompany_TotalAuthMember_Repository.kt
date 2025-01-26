@@ -9,8 +9,18 @@ import org.springframework.stereotype.Repository
 @Repository
 interface Db1_RaillyLinkerCompany_TotalAuthMember_Repository :
     JpaRepository<Db1_RaillyLinkerCompany_TotalAuthMember, Long> {
+    fun existsByAccountIdAndRowDeleteDateStr(
+        accountId: String,
+        rowDeleteDateStr: String
+    ): Boolean
+
     fun findByUidAndRowDeleteDateStr(
         uid: Long,
+        rowDeleteDateStr: String
+    ): Db1_RaillyLinkerCompany_TotalAuthMember?
+
+    fun findByAccountIdAndRowDeleteDateStr(
+        accountId: String,
         rowDeleteDateStr: String
     ): Db1_RaillyLinkerCompany_TotalAuthMember?
 }

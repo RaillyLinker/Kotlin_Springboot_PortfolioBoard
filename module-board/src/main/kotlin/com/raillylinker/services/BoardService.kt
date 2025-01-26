@@ -111,6 +111,12 @@ class BoardService(
         val boardItemVoList =
             ArrayList<BoardController.GetBoardPageOutputVo.BoardItemVo>()
         for (entity in entityList) {
+            val profileEntityList =
+                db1RaillyLinkerCompanyTotalAuthMemberProfileRepository.findAllByTotalAuthMemberUidAndRowDeleteDateStrOrderByPriorityDescRowCreateDateDesc(
+                    entity.writerUserUid,
+                    "/"
+                )
+
             boardItemVoList.add(
                 BoardController.GetBoardPageOutputVo.BoardItemVo(
                     entity.boardUid,
@@ -122,7 +128,11 @@ class BoardService(
                     entity.viewCount,
                     entity.writerUserUid,
                     entity.writerUserNickname,
-                    entity.writerUserProfileFullUrl
+                    if (profileEntityList.isEmpty()) {
+                        null
+                    } else {
+                        profileEntityList.first().imageFullUrl
+                    }
                 )
             )
         }
@@ -153,6 +163,12 @@ class BoardService(
             return null
         }
 
+        val profileEntityList =
+            db1RaillyLinkerCompanyTotalAuthMemberProfileRepository.findAllByTotalAuthMemberUidAndRowDeleteDateStrOrderByPriorityDescRowCreateDateDesc(
+                boardEntity.totalAuthMember.uid!!,
+                "/"
+            )
+
         httpServletResponse.status = HttpStatus.OK.value()
         return BoardController.GetBoardDetailOutputVo(
             boardEntity.boardTitle,
@@ -164,10 +180,10 @@ class BoardService(
             boardEntity.viewCount,
             boardEntity.totalAuthMember.uid!!,
             boardEntity.totalAuthMember.accountId,
-            if (boardEntity.totalAuthMember.frontTotalAuthMemberProfile == null) {
+            if (profileEntityList.isEmpty()) {
                 null
             } else {
-                boardEntity.totalAuthMember.frontTotalAuthMemberProfile!!.imageFullUrl
+                profileEntityList.first().imageFullUrl
             }
         )
     }
@@ -400,6 +416,12 @@ class BoardService(
         val boardCommentItemVoList =
             ArrayList<BoardController.GetCommentPageOutputVo.CommentItemVo>()
         for (entity in entityList) {
+            val profileEntityList =
+                db1RaillyLinkerCompanyTotalAuthMemberProfileRepository.findAllByTotalAuthMemberUidAndRowDeleteDateStrOrderByPriorityDescRowCreateDateDesc(
+                    entity.writerUserUid,
+                    "/"
+                )
+
             boardCommentItemVoList.add(
                 BoardController.GetCommentPageOutputVo.CommentItemVo(
                     entity.commentUid,
@@ -410,7 +432,11 @@ class BoardService(
                         .format(DateTimeFormatter.ofPattern("yyyy_MM_dd_'T'_HH_mm_ss_SSS_z")),
                     entity.writerUserUid,
                     entity.writerUserNickname,
-                    entity.writerUserProfileFullUrl
+                    if (profileEntityList.isEmpty()) {
+                        null
+                    } else {
+                        profileEntityList.first().imageFullUrl
+                    }
                 )
             )
         }
